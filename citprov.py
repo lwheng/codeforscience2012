@@ -3,10 +3,12 @@ import Utils
 class citprov:
   def __init__(self):
     self.pickler = Utils.pickler()
-    self.model = self.pickler.loadPickle(self.pickler.pathModel)
-    print
+    # Load model for prediction
+    #self.model = self.pickler.loadPickle(self.pickler.pathModel)
 
   def predict(self, model, query):
-    # Process query
+    # Process query (Might have multiple steps)
     queryProcessed = ""
-    return model.predict(queryProcessed)
+    # Predict query using model
+    #return model.predict(queryProcessed)
+    return 'Hello World!'
