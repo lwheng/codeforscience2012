@@ -32,7 +32,9 @@ class tools:
     return parseString(data)
 
   def normalize(self, text):
-    return unicodedata.normalize('NFKD', text).encode('ascii','ignore')
+    text = unicode(text, errors='ignore')
+    return text
+    #return unicodedata.normalize('NFKD', text).encode('ascii','ignore')
 
   def searchTermInLines(self, term, lines):
     for i in range(len(lines)):
@@ -70,7 +72,10 @@ class weight:
     
   def titleOverlap(self, cite_key, titles):
     return self.dist.jaccard(titles[cite_key['citing']], titles[cite_key['cited']])
-    
+
+  def titleOverlapRaw(self, title_citing, title_cited):
+    return self.dist.jaccard(title_citing, title_cited)
+
   def authorOverlap(self, cite_key, authors):
     citing = cite_key['citing']
     cited = cite_key['cited']
@@ -79,6 +84,19 @@ class weight:
     uniqueNames = len(authors[citing]) + len(authors[cited])
     for citingAuthor in authors[citing]:
       for citedAuthor in authors[cited]:
+        ratio = self.dist.levenshteinRatio(citingAuthor, citedAuthor)
+        if ratio > self.LAMBDA_AUTHOR_MATCH:
+          matches += 1
+          uniqueNames -= 1
+    if uniqueNames == 0:
+      return 1.0
+    return float(matches) / float(uniqueNames)
+
+  def authorOverlapRaw(self, authors_citing, authors_cited):
+    matches = 0
+    uniqueNames = len(authors_citing) + len(authors_cited)
+    for citingAuthor in authors_citing:
+      for citedAuthor in authors_cited:
         ratio = self.dist.levenshteinRatio(citingAuthor, citedAuthor)
         if ratio > self.LAMBDA_AUTHOR_MATCH:
           matches += 1
@@ -161,9 +179,9 @@ class dist:
       citedYear = 2000 + citedYear
     return (citingYear-citedYear)
 
-  def citSentLocation(self, cite_key, context_citStr, context, citingFile="/Users/lwheng/Downloads/fyp/parscitsectionxml500/"):
+  def citSentLocation(self, cite_key, context_citStr, context, pathParscitSection):
     citing = cite_key['citing']
-    citingFile = citingFile + citing + "-parscit-section.xml"
+    citingFile = os.path.join(pathParscitSection, citing + "-parscit-section.xml")
     vector = []
     if os.path.exists(citingFile):
       # Using context_citStr, first determine which is the citing sentence
@@ -207,7 +225,10 @@ class dist:
             vector.append(0)
           vector[-1] = 1 # Setting 'None' to 1
           return vector
-        header = tool.normalize(sectionHeaderNode.attributes['genericHeader'].value)
+        if sectionHeaderNode.attributes.has_key('genericHeader'):
+          header = sectionHeaderNode.attributes['genericHeader'].value
+        elif sectionHeaderNode.attributes.has_key('genericheader'):
+          header = sectionHeaderNode.attributes['genericheader'].value
         for h in (self.genericHeader):
           if header == h:
             vector.append(1)
@@ -228,23 +249,85 @@ class dist:
       vector[-1] = 1 # Setting 'None' to 1
       return vector
 
-class pickler:
-  def __init__(self, rootDirectory="/Users/lwheng/Downloads/fyp"):
-    self.pathAuthors = os.path.join(rootDirectory, "Authors.pickle")
-    self.pathDataset = os.path.join(rootDirectory, "Dataset.pickle")
-    self.pathDatasetTBA = os.path.join(rootDirectory, "DatasetTBA.pickle")
-    self.pathDatasetTBA_keys = os.path.join(rootDirectory, "DatasetTBA_keys.pickle")
-    self.pathExperiment = os.path.join(rootDirectory, "Experiment.pickle")
-    self.pathModel = os.path.join(rootDirectory, "Model.pickle")
-    self.pathRaw = os.path.join(rootDirectory, "Raw.pickle")
-    self.pathTarget = os.path.join(rootDirectory, "Target.pickle")
-    self.pathTitles = os.path.join(rootDirectory, "Titles.pickle")
+  def citSentLocationRaw(self, context_citStr, context, dom_citing_parscit_section):
+    vector = []
+    # Using context_citStr, first determine which is the citing sentence
+    # We replace "et al." by "et al" so the sentence tokenizer doesn't split it up
+    context_citStr = context_citStr.replace("et al.", "et al")
+    context = context.replace("et al.", "et al")
 
-    #self.authors = self.loadPickle(self.pathAuthors)
-    #self.dataset = self.loadPickle(self.pathDataset)
-    #self.experiment = self.loadPickle(self.pathExperiment)
-    #self.raw = self.loadPickle(self.pathRaw)
-    #self.titles = self.loadPickle(self.pathTitles)
+    context_lines = self.sentenceTokenizer.tokenize(context)
+    citSent = self.tools.searchTermInLines(context_citStr, context_lines)
+    dom = dom_citing_parscit_section
+    target = None
+    bodyTexts = dom.getElementsByTagName('bodyText')
+    regex = r"\<.*\>(.*)\<.*\>"
+    tool = tools()
+
+    minDistance = 314159265358979323846264338327950288419716939937510
+    for i in range(len(bodyTexts)):
+      b = bodyTexts[i]
+      text = b.toxml().replace("\n", " ").replace("- ", "").strip()
+      obj = re.findall(regex, text)
+      tempDist = self.jaccard(context_lines[citSent], text)
+      if tempDist < minDistance:
+        minDistance = tempDist
+        target = b
+    
+    if target:
+      searching = True
+      sectionHeaderNode = None
+      target = target.previousSibling
+      while target:
+        if target.nodeType == Node.ELEMENT_NODE:
+          if target.nodeName == 'sectionHeader':
+            sectionHeaderNode = target
+            break
+        target = target.previousSibling
+      if target == None:
+        for h in (self.genericHeader):
+          vector.append(0)
+        vector[-1] = 1 # Setting 'None' to 1
+        return vector
+      if sectionHeaderNode.attributes.has_key('genericHeader'):
+        header = sectionHeaderNode.attributes['genericHeader'].value
+      elif sectionHeaderNode.attributes.has_key('genericheader'):
+        header = sectionHeaderNode.attributes['genericheader'].value
+      for h in (self.genericHeader):
+        if header == h:
+          vector.append(1)
+        else:
+          vector.append(0)
+      return vector
+      #return tool.normalize(sectionHeaderNode.attributes['genericHeader'].value)
+    else:
+      # Not found
+      for h in (self.genericHeader):
+        vector.append(0)
+      vector[-1] = 1 # Setting 'None' to 1
+      return vector
+
+class pickler:
+  def __init__(self):
+    config = pickle.load(open("Config.pickle", "r"))
+    self.pathRoot = config[0]
+    self.pathCode = config[1]
+    self.pathParscit = os.path.join(self.pathRoot, "parscitxml")
+    self.pathParscitSection = os.path.join(self.pathRoot, "parscitsectionxml")
+    self.pathPDFBox = os.path.join(self.pathRoot, "pdfbox-0.72")
+
+    # Pickles
+    self.pathAnnotations = os.path.join(self.pathRoot, "Annotations.pickle")
+    self.pathAuthors = os.path.join(self.pathRoot, "Authors.pickle")
+    self.pathDataset = os.path.join(self.pathRoot, "Dataset.pickle")
+    self.pathDatasetTBA = os.path.join(self.pathRoot, "DatasetTBA.pickle")
+    self.pathDatasetTBA_keys = os.path.join(self.pathRoot, "DatasetTBA_keys.pickle")
+    self.pathExperiment = os.path.join(self.pathRoot, "Experiment.pickle")
+    self.pathForAnnotation = os.path.join(self.pathRoot, "For_Annotation.pickle")
+    self.pathModel = os.path.join(self.pathRoot, "Model.pickle")
+    self.pathRaw = os.path.join(self.pathRoot, "Raw.pickle")
+    self.pathTarget = os.path.join(self.pathRoot, "Target.pickle")
+    self.pathTitles = os.path.join(self.pathRoot, "Titles.pickle")
 
   def loadPickle(self, filename):
     temp = pickle.load(open(filename, "rb"))
@@ -254,11 +337,11 @@ class pickler:
     pickle.dump(data, open(filename+".pickle", "wb"))
 
 class dataset_tools:
-  def __init__(self, dist, nltk_Tools, tools, rootDirectory="/Users/lwheng/Downloads/fyp/"):
-    self.parscitSectionPath = os.path.join(rootDirectory, "parscitsectionxml")
-    self.parscitPath = os.path.join(rootDirectory, "parscitxml")
+  def __init__(self, dist, nltk_Tools, pickler, tools):
     self.dist = dist
     self.nltk_Tools = nltk_Tools
+    self.parscitPath = pickler.pathParscit
+    self.parscitSectionPath = pickler.pathParscitSection
     self.tools = tools
 
   def fetchExperiment(self, raw):
@@ -299,7 +382,42 @@ class dataset_tools:
       if titleTag == [] or titleTag[0].firstChild == None:
         continue
       title = titleTag[0].firstChild.data
-      title = tools.normalize(title)
+      if not type(title) == unicode:
+        title = tools.normalize(title)
+      if re.search("Computational Linguistics,$", title):
+        title = title.replace("Computational Linguistics,", "")
+      levenshteinDistance = dist.levenshtein(title.lower(), titleToMatch.lower())
+      masiDistance = dist.masi(title, titleToMatch)
+      thisDistance = levenshteinDistance*masiDistance
+      if thisDistance < minDistance:
+        minDistance = thisDistance
+        bestIndex = i
+    if bestIndex == -1:
+      return None
+    return citations[bestIndex]
+
+  def prepContextsRaw(self, dist, tools, title_citing, title_cited, dom_citing_parscit):
+    titleToMatch = title_cited
+    dom = dom_citing_parscit
+
+    citations = dom.getElementsByTagName('citation')
+    tags = ["title", "note", "booktitle", "journal", "tech", "author"]
+    titleTag = []
+    index = 0
+    bestIndex = -1
+    minDistance = 314159265358979323846264338327950288419716939937510
+    for i in range(len(citations)):
+      c = citations[i]
+      titleTag = []
+      for index in range(len(tags)):
+        titleTag = c.getElementsByTagName(tags[index])
+        if titleTag:
+          break
+      if titleTag == [] or titleTag[0].firstChild == None:
+        continue
+      title = titleTag[0].firstChild.data
+      if not type(title) == unicode:
+        title = tools.normalize(title)
       if re.search("Computational Linguistics,$", title):
         title = title.replace("Computational Linguistics,", "")
       levenshteinDistance = dist.levenshtein(title.lower(), titleToMatch.lower())
@@ -327,6 +445,7 @@ class dataset_tools:
     return raw
 
   def prepDataset(self, run, raw, experiment):
+    forannotation = []
     dataset = []
     keys = []
     for e in experiment:
@@ -338,12 +457,20 @@ class dataset_tools:
       citing_col = self.nltk_Tools.nltkTextCollection(context_list)
       for c in contexts:
         x = run.extractFeatures(e, c, citing_col)
-        dataset.append(x)
-        keys.append(e)
+        forannotation.append((e, c))
+        instances = []
+        featuresLessCosSim = x[:-1]
+        for i in x[-1]:
+          temp = featuresLessCosSim[:]
+          temp.append(i[1][1])
+          temp.append(i[1][0].item())
+          instances.append(temp)
+          keys.append(e)
+        dataset.extend(instances)
     X = np.asarray(dataset)
-    return (keys, X)
+    return (forannotation, keys, X)
 
-  def prepTarget(self, annotationFile):
+  def prepAnnotations(self, annotationFile):
     regex = r"\#(\d{3})\s+(.*)==>(.*),(.*)"
     target = []
     for l in open(annotationFile):
@@ -359,7 +486,7 @@ class dataset_tools:
       temp.append(t[2])
     y = np.asarray(temp)
     return y
-  
+
   def prepModel(self, classifier, dataset, target):
     classifier.fit(dataset, target)
     return classifier

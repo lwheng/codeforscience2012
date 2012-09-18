@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<citationList>
+ <citation valid="true">
+  <rawString>IEEE 802.11, IEEE Standard for Information Technology Telecommunications and Information Exchange Between Systems Local and Metropolitan area Networks Specific Requirements. Part 11: Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications, 2007.</rawString>
+  <authors>
+   <author>IEEE 802.11</author>
+  </authors>
+  <title>IEEE Standard for Information Technology Telecommunications and Information Exchange Between Systems Local and Metropolitan area Networks Specific Requirements. Part 11: Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications</title>
+  <date></date>
+  <booktitle></booktitle>
+  <location></location>
+  <marker>[1]</marker>
+  <contexts>
+   <context citStr="[1]" endWordPosition="0" postition="0" startWordPosition="0">To improve the IEEE 802.11 standard to support quality of service in wireless network, the IEEE 802.11 working group introduced IEEE 802.11e standard to differentiate the traffic flows in the network [1] . The IEEE 802.11e standard specifies a new medium access coordination function called Hybrid Coordination Function (HCF) which is only usable in QoS network configurations. The contention-based channel access method of HCF function is called Enhanced Distributed Channel Access (EDCA).</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>J. Hui, M. Devetsikiotis, A unified model for the performance analysis of IEEE 802.11e wireless LANs, IEEE Transactions on Communications, 2005</rawString>
+  <authors>
+   <author>J. Hui</author>
+   <author>M. Devetsikiotis</author>
+  </authors>
+  <title>A unified model for the performance analysis of IEEE 802.11e wireless LANs</title>
+  <date>2005</date>
+  <booktitle>IEEE Transactions on Communications</booktitle>
+  <location></location>
+  <marker>[2]</marker>
+  <contexts>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>Z. Tao, S. Panwar, Throughput and delay analysis for the IEEE 802.11e enhanced distributed channel access, IEEE Transactions on Communications, 2006</rawString>
+  <authors>
+   <author>Z. Tao</author>
+   <author>S. Panwar</author>
+  </authors>
+  <title>Throughput and delay analysis for the IEEE 802.11e enhanced distributed channel access</title>
+  <date>2006</date>
+  <booktitle>IEEE Transactions on Communications</booktitle>
+  <location></location>
+  <marker>[3]</marker>
+  <contexts>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>H. Wu, X. Wang, Q. Zhang, X. Shen, IEEE 802.11e enhanced distributed channel access (EDCA) throughput analysis, in: Proceedings of IEEE International Conference on Communications (ICCâ??06), vol. 1, 2006, pp. 223â??228.</rawString>
+  <authors>
+   <author>H. Wu</author>
+   <author>X. Wang</author>
+   <author>Q. Zhang</author>
+   <author>X. Shen</author>
+  </authors>
+  <title>IEEE 802.11e enhanced distributed channel access (EDCA) throughput analysis</title>
+  <date>2006</date>
+  <booktitle>in: Proceedings of IEEE International Conference on Communications (ICCâ??06)</booktitle>
+  <location></location>
+  <marker>[4]</marker>
+  <contexts>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>Y. Yan, C. Pan, An improved analytical model for IEEE802.11e enhanced distributed channel access, in: Proceedings of International Symposium on Information Technology Convergence (ISITCâ??07), vol. 1, 2007, pp. 135â??142.</rawString>
+  <authors>
+   <author>Y. Yan</author>
+   <author>C. Pan</author>
+  </authors>
+  <title>An improved analytical model for IEEE802.11e enhanced distributed channel access</title>
+  <date>2007</date>
+  <booktitle>in: Proceedings of International Symposium on Information Technology Convergence (ISITCâ??07)</booktitle>
+  <location></location>
+  <marker>[5]</marker>
+  <contexts>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>N.C. Taher, Y.G. Doudane, B. ElHassan, A complete and accurate analytical model for IEEE 802.11e EDCA under saturation conditions, in: Proceedings of ACS/IEEE AICCSA, vol. 1, May 2009, pp. 800â??807.</rawString>
+  <authors>
+   <author>N.C. Taher</author>
+   <author>Y.G. Doudane</author>
+   <author>B. ElHassan</author>
+  </authors>
+  <title>A complete and accurate analytical model for IEEE 802.11e EDCA under saturation conditions</title>
+  <date></date>
+  <booktitle>in: Proceedings of ACS/IEEE AICCSA</booktitle>
+  <location></location>
+  <marker>[6]</marker>
+  <contexts>
+   <context citStr="[6]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>J.Y. Lee, H.S. Lee, A performance analysis model for IEEE 802.11e EDCA under saturation condition, IEEE Transactions on Communications, 2009</rawString>
+  <authors>
+   <author>J.Y. Lee</author>
+   <author>H.S. Lee</author>
+  </authors>
+  <title>A performance analysis model for IEEE 802.11e EDCA under saturation condition</title>
+  <date>2009</date>
+  <booktitle>IEEE Transactions on Communications</booktitle>
+  <location></location>
+  <marker>[7]</marker>
+  <contexts>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>I. Inan, F. Keceli, E. Ayanoglu, Saturation throughput analysis of the 802.11e enhanced distributed channel access function, in: Proceedings of IEEE International Conference on Communications (ICCâ??07), vol. 1, 2007, pp. 409â??414.</rawString>
+  <authors>
+   <author>I. Inan</author>
+   <author>F. Keceli</author>
+   <author>E. Ayanoglu</author>
+  </authors>
+  <title>Saturation throughput analysis of the 802.11e enhanced distributed channel access function</title>
+  <date>2007</date>
+  <booktitle>in: Proceedings of IEEE International Conference on Communications (ICCâ??07)</booktitle>
+  <location></location>
+  <marker>[8]</marker>
+  <contexts>
+   <context citStr="[2â??8]" endWordPosition="0" postition="0" startWordPosition="0">Because considering saturation condition makes the model much simpler researchers have mainly focused on the saturation analysis of IEEE 802.11e EDCA. This assumption simplifies the model because the traffic characteristics can be neglected. Recently, saturation regime has been studied in [2â??8] . All the models except the one in [6] set the TXOP parameter to 0 so that all the stations are allowed to transmit just one data frame in case of winning the medium. In addition, all the models consider ideal channel condition, which is an unreal assumption. Therefore, the models do not reflect the real network situation.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>P.E. Engelstad, O.N. Osterbo, Analysis of the total delay of the IEEE 802.11e EDCA and 802.11 DCF, in: Proceedings of IEEE International Conference on Communications (ICC â??06), vol. 2, 2006, pp. 552â??559.</rawString>
+  <authors>
+   <author>P.E. Engelstad</author>
+   <author>O.N. Osterbo</author>
+  </authors>
+  <title>Analysis of the total delay of the IEEE 802.11e EDCA and 802.11 DCF</title>
+  <date>2006</date>
+  <booktitle>in: Proceedings of IEEE International Conference on Communications (ICC â??06)</booktitle>
+  <location></location>
+  <marker>[9]</marker>
+  <contexts>
+   <context citStr="[9,10]" endWordPosition="0" postition="0" startWordPosition="0">Compared to saturation condition, there are few works that evaluate the IEEE 802.11e EDCA under non-saturation condition. In [9,10] , authors analyzed IEEE 802.11e under non-saturation condition. However, their models have inaccuracies related to backoff countdown and ignore TXOP. In [11] , the authors proposed a three dimensional Markov chain that for the first time includes TXOP limit. However, the model does not include AIFS countdown. In [12] , Abu-Sharkh and Tewfik proposed a complex multi-dimensional Markov chain which covers important features of IEEE 802.11e EDCA under finite load. Though their model covers important features of IEEE 802.11e EDCA, it includes some inaccuracies. The main inaccuracy is related to the AIFS sensing period. Therefore, the suggested models for non-saturation condition are imprecise. Thus, more works are still required to study behavior of the IEEE 802.11e EDCA standard more precisely.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>P.E. Engelstad, O.N. Osterbo, Queueing delay analysis of IEEE 802.11e EDCA, in: Proceedings of Wireless On demand Network Systems and Services (Wonsâ??06), vol. 1, 2006, pp. 123â??133.</rawString>
+  <authors>
+   <author>P.E. Engelstad</author>
+   <author>O.N. Osterbo</author>
+  </authors>
+  <title>Queueing delay analysis of IEEE 802.11e EDCA</title>
+  <date>2006</date>
+  <booktitle>in: Proceedings of Wireless On demand Network Systems and Services (Wonsâ??06)</booktitle>
+  <location></location>
+  <marker>[10]</marker>
+  <contexts>
+   <context citStr="[9,10]" endWordPosition="0" postition="0" startWordPosition="0">Compared to saturation condition, there are few works that evaluate the IEEE 802.11e EDCA under non-saturation condition. In [9,10] , authors analyzed IEEE 802.11e under non-saturation condition. However, their models have inaccuracies related to backoff countdown and ignore TXOP. In [11] , the authors proposed a three dimensional Markov chain that for the first time includes TXOP limit. However, the model does not include AIFS countdown. In [12] , Abu-Sharkh and Tewfik proposed a complex multi-dimensional Markov chain which covers important features of IEEE 802.11e EDCA under finite load. Though their model covers important features of IEEE 802.11e EDCA, it includes some inaccuracies. The main inaccuracy is related to the AIFS sensing period. Therefore, the suggested models for non-saturation condition are imprecise. Thus, more works are still required to study behavior of the IEEE 802.11e EDCA standard more precisely.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>I. Inan, F. Keceli, E. Ayanoglu, Modeling the 802.11e enhanced distributed channel access function, in: Proceedings of IEEE Global Telecommunications Conference (Globecom07), vol. 1, 2007, pp. 2546â??2551.</rawString>
+  <authors>
+   <author>I. Inan</author>
+   <author>F. Keceli</author>
+   <author>E. Ayanoglu</author>
+  </authors>
+  <title>Modeling the 802.11e enhanced distributed channel access function</title>
+  <date>2007</date>
+  <booktitle>in: Proceedings of IEEE Global Telecommunications Conference (Globecom07)</booktitle>
+  <location></location>
+  <marker>[11]</marker>
+  <contexts>
+   <context citStr="[11]" endWordPosition="0" postition="0" startWordPosition="0">Compared to saturation condition, there are few works that evaluate the IEEE 802.11e EDCA under non-saturation condition. In [9,10] , authors analyzed IEEE 802.11e under non-saturation condition. However, their models have inaccuracies related to backoff countdown and ignore TXOP. In [11] , the authors proposed a three dimensional Markov chain that for the first time includes TXOP limit. However, the model does not include AIFS countdown. In [12] , Abu-Sharkh and Tewfik proposed a complex multi-dimensional Markov chain which covers important features of IEEE 802.11e EDCA under finite load. Though their model covers important features of IEEE 802.11e EDCA, it includes some inaccuracies. The main inaccuracy is related to the AIFS sensing period. Therefore, the suggested models for non-saturation condition are imprecise. Thus, more works are still required to study behavior of the IEEE 802.11e EDCA standard more precisely.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>O.M.F. Abu-Sharkh, A.H. Tewfik, Toward accurate modeling of the IEEE 802.11e EDCA under finite load and error-prone channel, IEEE Transactions on Wireless Communications, 2008</rawString>
+  <authors>
+   <author>O.M.F. Abu-Sharkh</author>
+   <author>A.H. Tewfik</author>
+  </authors>
+  <title>Toward accurate modeling of the IEEE 802.11e EDCA under finite load and error-prone channel</title>
+  <date>2008</date>
+  <booktitle>IEEE Transactions on Wireless Communications</booktitle>
+  <location></location>
+  <marker>[12]</marker>
+  <contexts>
+   <context citStr="[12]" endWordPosition="0" postition="0" startWordPosition="0">Compared to saturation condition, there are few works that evaluate the IEEE 802.11e EDCA under non-saturation condition. In [9,10] , authors analyzed IEEE 802.11e under non-saturation condition. However, their models have inaccuracies related to backoff countdown and ignore TXOP. In [11] , the authors proposed a three dimensional Markov chain that for the first time includes TXOP limit. However, the model does not include AIFS countdown. In [12] , Abu-Sharkh and Tewfik proposed a complex multi-dimensional Markov chain which covers important features of IEEE 802.11e EDCA under finite load. Though their model covers important features of IEEE 802.11e EDCA, it includes some inaccuracies. The main inaccuracy is related to the AIFS sensing period. Therefore, the suggested models for non-saturation condition are imprecise. Thus, more works are still required to study behavior of the IEEE 802.11e EDCA standard more precisely.</context>
+  </contexts>
+ </citation>
+ <citation valid="true">
+  <rawString>OPNET Technologies, Inc., OPNET Modeler, Bethesda, MD, 2009.</rawString>
+  <authors>
+   <author>OPNET Technologies</author>
+  </authors>
+  <title>Inc.</title>
+  <date></date>
+  <booktitle></booktitle>
+  <location></location>
+  <marker>[13]</marker>
+  <contexts>
+   <context citStr="[13]" endWordPosition="0" postition="0" startWordPosition="0">In this work, we use OPNET simulator [13] for evaluating the IEEE 802.11e EDCA. In the simulation we consider four ACs. For focusing on the differentiation parameters and achieving clearer results we consider that each station has exactly one queue with a specific AC. We assume a single hop ad-hoc network with n k nodes transmitting frames from traffic class k for which the frame destination is chosen randomly. We suppose five stations from every access category unless otherwise mentioned. The transmission rate is set to 2 Mbps. According to the standard the header fields are transmitted at 1 Mbps. Frame size excluding the MAC and PHY headers is set to 100 B, except the case that we investigate the effects of frame size on the network performance in which we consider frames of 500 B payload size too. In the simulation we employ RTS/CTS mechanism for transmission of all frames by all the stations. Therefore, collision can occur only for RTS frames. The buffer size of every station is set to 32 KB. Therefore, the buffer overflow occurs in saturation condition for all the stations and the extra frames are dropped.</context>
+  </contexts>
+ </citation>
+</citationList>
