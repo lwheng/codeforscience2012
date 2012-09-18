@@ -13,6 +13,7 @@ class citprov:
     self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight)
     # Load model for prediction
     self.model = self.pickler.loadPickle(self.pickler.pathModelCFS)
+    self.model = self.pickler.loadPickle('ModelCFS.pickle')
 
   def predict(self, model, citing_parscit, citing_parscit_section, cited_parscit, cited_parscit_section):
     # Note: This function returns a provenance prediction for ONE citation
@@ -42,7 +43,7 @@ class citprov:
       authors_cited.append(dom_author.firstChild.wholeText)
 
     # Extract all chunks in cited paper
-    bodyTexts = dom_cited_parscit_section.getElementsByTagName('bodyText')
+    #bodyTexts = dom_cited_parscit_section.getElementsByTagName('bodyText')
 
     # Extract contexts
     citation = self.dataset_tools.prepContextsCFS(self.dist, self.tools, title_citing, title_cited, dom_citing_parscit)
