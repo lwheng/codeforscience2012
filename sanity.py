@@ -1,4 +1,6 @@
+execfile('Utils.py')
+execfile('Feature_Extractor.py')
 execfile('citprov.py')
 import citprov
 c = citprov.citprov()
-c.predict("asd", 'sample-parscit.xml', 'sample-parscit-section.xml', 'sample-parscit.xml', 'sample-parscit-section.xml')
+print c.predict(c.model, 'sample-parscit.xml', 'sample-parscit-section.xml', 'sample-parscit.xml', 'sample-parscit-section.xml')

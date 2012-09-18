@@ -12,7 +12,7 @@ class citprov:
     self.dataset_tools = Utils.dataset_tools(self.dist, self.nltk_Tools, self.pickler, self.tools)
     self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight)
     # Load model for prediction
-    #self.model = self.pickler.loadPickle(self.pickler.pathModel)
+    self.model = self.pickler.loadPickle(self.pickler.pathModelCFS)
 
   def predict(self, model, citing_parscit, citing_parscit_section, cited_parscit, cited_parscit_section):
     # Note: This function returns a provenance prediction for ONE citation
@@ -41,8 +41,11 @@ class citprov:
     for dom_author in dom_authors_cited[0].getElementsByTagName('fullname'):
       authors_cited.append(dom_author.firstChild.wholeText)
 
-    # First we need to extract the contexts
-    citation = self.dataset_tools.prepContextsRaw(self.dist, self.tools, title_citing, title_cited, dom_citing_parscit)
+    # Extract all chunks in cited paper
+    bodyTexts = dom_cited_parscit_section.getElementsByTagName('bodyText')
+
+    # Extract contexts
+    citation = self.dataset_tools.prepContextsCFS(self.dist, self.tools, title_citing, title_cited, dom_citing_parscit)
     contexts = citation.getElementsByTagName('context')
 
     # Set up citing_col for TF-IDF
@@ -53,13 +56,7 @@ class citprov:
     citing_col = self.nltk_Tools.nltkTextCollection(context_list)
 
     for c in contexts:
-      feature_vector = self.extractor.extractFeaturesRaw(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
-      print feature_vector
+      feature_vector = self.extractor.extractFeaturesOnce(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
 
-    sys.exit()
-
-    # Process query (Might have multiple steps)
-    queryProcessed = ""
     # Predict query using model
-    #return model.predict(queryProcessed)
-    return 'Hello World!'
+    return model.predict(feature_vector)
