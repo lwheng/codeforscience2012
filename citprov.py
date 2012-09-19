@@ -12,12 +12,10 @@ class citprov:
     self.dataset_tools = Utils.dataset_tools(self.dist, self.nltk_Tools, self.pickler, self.tools)
     self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight)
     # Load model for prediction
-    self.model = self.pickler.loadPickle(self.pickler.pathModelCFS)
     self.model = self.pickler.loadPickle('ModelCFS.pickle')
+    self.model_v2 = self.pickler.loadPickle('ModelCFS_v2.pickle')
 
-  def predict(self, model, citing_parscit, citing_parscit_section, cited_parscit, cited_parscit_section):
-    # Note: This function returns a provenance prediction for ONE citation
-    # Open and read files into memory
+  def predict_v2(self, model_v2, dom_citing_parscit, dom_citing_parscit_section, dom_cited_parscit, dom_cited_parscit_section):
     data = open(citing_parscit,'r').read()
     dom_citing_parscit = self.tools.parseXML(self.tools.normalize(data))
     data = open(citing_parscit_section,'r').read()
@@ -61,3 +59,44 @@ class citprov:
 
     # Predict query using model
     return model.predict(feature_vector)
+
+  def predict(self, model, dom_citing_parscit, dom_citing_parscit_section):
+    # Uses only DOMs from the current (citing) paper
+    # We can return provenance predictions for all contexts found in this current paper
+    # Open and read files into memory
+
+    # Citing
+    title_citing = dom_citing_parscit_section.getElementsByTagName('title')[0].firstChild.wholeText
+    dom_authors_citing = dom_citing_parscit_section.getElementsByTagName('authors')
+    authors_citing = []
+    for dom_author in dom_authors_citing[0].getElementsByTagName('fullname'):
+      authors_citing.append(dom_author.firstChild.wholeText)
+
+    # Get all contexts
+    citations = dom_citing_parscit.getElementsByTagName('citation')
+    prediction_list = []
+    for citation in citations:
+      # Get title
+      dom_title_cited = citation.getElementsByTagName('title')
+      if dom_title_cited:
+        title_cited = dom_title_cited[0].firstChild.wholeText
+
+      # Get authors
+      dom_authors_cited = citation.getElementsByTagName('author')
+      authors_cited = []
+      for a in dom_authors_cited:
+        authors_cited.append(a.firstChild.wholeText)
+
+      # Get contexts
+      dom_contexts_cited = citation.getElementsByTagName('context')
+      context_list = []
+      for c in dom_contexts_cited:
+        value = c.firstChild.wholeText.lower()
+        context_list.append(self.nltk_Tools.nltkText(self.nltk_Tools.nltkWordTokenize(value)))
+      citing_col = self.nltk_Tools.nltkTextCollection(context_list)
+
+      for c in dom_contexts_cited:
+        feature_vector = self.extractor.extractFeaturesOnce(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
+        prediction = model.predict(feature_vector)
+        prediction_list.append(prediction)
+    return prediction_list

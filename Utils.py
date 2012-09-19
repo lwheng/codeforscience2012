@@ -42,7 +42,8 @@ class tools:
       l = lines[i]
       if term in l:
         return i
-    return None
+    # Cannot find, return the mid of the chunk
+    return int(len(lines)/2)
 
 class weight:
   def __init__(self):
@@ -466,10 +467,16 @@ class dataset_tools:
           raw[str(e['citing']+"==>"+e['cited'])] = record
     return raw
 
-  def prepDataset(self, run, raw, experiment):
+  def prepDataset(self, run, raw, experiment, annotations):
+    # Raw has 500
+    # Experiment has 500
+    # Annotations has 757
     forannotation = []
     dataset = []
     keys = []
+    indexAnnotations = 0
+    indexInstances = 0
+
     for e in experiment:
       contexts = raw[e['citing']+"==>"+e['cited']]['contexts']
       context_list = []
