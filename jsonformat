@@ -1,0 +1,68 @@
+on1
+a. Parameters to WING
+{
+version: "1",
+           paperType: "current",
+           identifier: "DOI of current paper",
+           article: "XML string of current paper"
+}
+
+
+b. Results from WING
+{
+  "version":"1",
+    "references":[
+    {
+      "metadata":{
+        "authors": "author list of reference paper",
+        "title":"title of reference paper",
+        "year":"year of reference paper"    
+      },
+      "entries":[
+      {
+        "cite-context":"the 1st citation sentence",  
+        "cite-type":"the citation type",
+        "prov-type":"the provence type"
+      },
+      {
+        "cite-context":"the 2nd citation sentence",  
+        "cite-type":"the citation type",
+        "prov-type":"the provence type"
+      } 
+      ]
+    }
+  ]
+} 
+
+2. Version2
+Also send one reference paper to WING
+
+a. Parameters to WING
+{
+version: "2",
+           paperType: "reference",
+           identifier: "DOI of current paper",
+           article: "XML string of reference paper"
+}
+
+b. Resutls from WING
+{
+  "version":"2",
+    "references":
+    { 
+      "provs":[
+      {
+        "cite-context":"the 1st citation sentence",  
+        "prov-type":"the provenance type",
+        "prov-section":"the provenance at the section level",
+        "prov-snippet":"the text snippet from the reference section"
+      },
+      {
+        "cite-context":"the 1st citation sentence",  
+        "prov-type":"the provenance type",
+        "prov-section":"the provenance at the section level",
+        "prov-snippet":"the text snippet from the reference section"
+      }
+      ]
+    }
+}

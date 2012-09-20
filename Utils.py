@@ -7,9 +7,11 @@ import os
 import math
 import numpy as np
 import cPickle as pickle
+from sets import Set
 from nltk.corpus import stopwords
 from nltk.tokenize.punkt import PunktSentenceTokenizer
 from nltk.metrics import distance
+import sys
 
 class nltk_tools:
   def nltkWordTokenize(self, text):
@@ -366,6 +368,7 @@ class dataset_tools:
     self.parscitPath = pickler.pathParscit
     self.parscitSectionPath = pickler.pathParscitSection
     self.tools = tools
+    self.LAMBDA_ANNOTATION_MATCH = 0.5
 
   def fetchExperiment(self, raw):
     experiment = []
@@ -474,6 +477,7 @@ class dataset_tools:
     forannotation = []
     dataset = []
     keys = []
+    targets = []
     indexAnnotations = 0
     indexInstances = 0
 
@@ -485,21 +489,48 @@ class dataset_tools:
         context_list.append(self.nltk_Tools.nltkText(self.nltk_Tools.nltkWordTokenize(value)))
       citing_col = self.nltk_Tools.nltkTextCollection(context_list)
       for c in contexts:
+        currentAnnotation = annotations[indexAnnotations]
+        indexAnnotations += 1
         x = run.extractFeatures(e, c, citing_col)
         forannotation.append((e, c))
         instances = []
         featuresLessCosSim = x[:-1]
         for i in x[-1]:
+          target = self.prepTarget(currentAnnotation, i[0])
+          targets.append(target)
           temp = featuresLessCosSim[:]
+          # i[1][1] is chunkAvgWeight
           temp.append(i[1][1])
+          # i[1][0] is cosineSim
           temp.append(i[1][0].item())
           instances.append(temp)
           keys.append(e)
         dataset.extend(instances)
     X = np.asarray(dataset)
-    return (forannotation, keys, X)
+    targets = np.asarray(targets)
+    return (forannotation, keys, X, targets)
 
   def prepDatasetCFS(self, run, raw, experiment):
+    forannotation = []
+    dataset = []
+    keys = []
+    for e in experiment:
+      contexts = raw[e['citing']+"==>"+e['cited']]['contexts']
+      context_list = []
+      for c in contexts:
+        value = c.firstChild.data.lower()
+        value = unicodedata.normalize('NFKD', value).encode('utf-8','ignore')
+        context_list.append(self.nltk_Tools.nltkText(self.nltk_Tools.nltkWordTokenize(value)))
+      citing_col = self.nltk_Tools.nltkTextCollection(context_list)
+      for c in contexts:
+        x = run.extractFeaturesCFS(e, c, citing_col)
+        forannotation.append((e, c))
+        keys.append(e)
+        dataset.append(x)
+    X = np.asarray(dataset)
+    return (forannotation, keys, X)
+
+  def prepDatasetCFS_v2(self, run, raw, experiment):
     forannotation = []
     dataset = []
     keys = []
@@ -539,6 +570,37 @@ class dataset_tools:
   def prepModel(self, classifier, dataset, target):
     classifier.fit(dataset, target)
     return classifier
+
+  def prepTarget(self, annotation, chunk):
+    # General - 0
+    # Specific - Yes - 1
+    # Specific - No - 2
+    # Undetermined - 3
+    if annotation == "-":
+      return 0
+    elif annotation == "?":
+      return 3
+    else:
+      ranges = []
+      temp = annotation.split("!")
+      for t in temp:
+        if t:
+          top = t.split("-")[0]
+          bottom = t.split("-")[1]
+          ranges.append((int(top),int(bottom)))
+
+      temp = chunk.split("-")
+      top = int(temp[0])
+      bottom = int(temp[1])
+      chunkRange = range(top, bottom+1)
+      chunkRange_set = Set(chunkRange)
+      for r in ranges:
+        testRange = range(r[0], r[1]+1)
+        testRange_set = Set(testRange)
+        intersect_set = testRange_set & chunkRange_set
+        if float(len(list(intersect_set)))/float(len(list(testRange))) > self.LAMBDA_ANNOTATION_MATCH:
+          return 1
+      return 2
 
 class classifier:
   def __init__(self, classifier):

@@ -10,7 +10,7 @@ class citprov:
     self.tools = Utils.tools()
     self.weight = Utils.weight()
     self.dataset_tools = Utils.dataset_tools(self.dist, self.nltk_Tools, self.pickler, self.tools)
-    self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight)
+    self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight, "authors", "titles")
     # Load model for prediction
     self.model = self.pickler.loadPickle('ModelCFS.pickle')
     self.model_v2 = self.pickler.loadPickle('ModelCFS_v2.pickle')
@@ -55,7 +55,7 @@ class citprov:
     citing_col = self.nltk_Tools.nltkTextCollection(context_list)
 
     for c in contexts:
-      feature_vector = self.extractor.extractFeaturesOnce(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
+      feature_vector = self.extractor.extractFeaturesCFS_v2(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
 
     # Predict query using model
     return model.predict(feature_vector)
@@ -96,7 +96,7 @@ class citprov:
       citing_col = self.nltk_Tools.nltkTextCollection(context_list)
 
       for c in dom_contexts_cited:
-        feature_vector = self.extractor.extractFeaturesOnce(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
+        feature_vector = self.extractor.extractFeaturesCFS_v1(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
         prediction = model.predict(feature_vector)
         prediction_list.append(prediction)
     return prediction_list
