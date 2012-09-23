@@ -11,12 +11,9 @@ if __name__ == '__main__':
   if option == "mac":
     rootDir = "/Users/lwheng/Downloads/fyp"
     codeDir = "/Users/lwheng/Dropbox/fyp/code"
-  elif option == "ubuntu":
-    rootDir = "/home/lwheng/Desktop"
-    codeDir = "/home/lwheng/Dropbox/fyp/code"
   elif option == "wing":
     rootDir = "/home/lwheng/fypsource"
-    codeDir = "/home/lwheng/fyp/code"
+    codeDir = "/home/lwheng/codeforscience2012"
   elif option == "citweb":
     rootDir = "./"
     codeDir = "./"

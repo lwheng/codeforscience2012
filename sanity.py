@@ -23,17 +23,8 @@ dom_cited_parscit = c.tools.parseXML(c.tools.normalize(data1))
 dom_cited_parscit_section = c.tools.parseXML(c.tools.normalize(data2))
 
 # Version 1: Does not require the cited paper; Does not output a 'region' prediction
-prediction_list = c.predict(c.model, dom_citing_parscit, dom_citing_parscit_section)
-for prediction in prediction_list:
-  if prediction == -1:
-    print "specific"
-  else:
-    print "general"
+entries = c.predict(c.model, dom_citing_parscit, dom_citing_parscit_section)
 
-print
-print
-sys.exit()
 # Version 2: Requires the cited paper; prediction a best region for citation's context
 prediction_list = c.predict_v2(c.model_v2, dom_citing_parscit, dom_citing_parscit_section, dom_cited_parscit, dom_cited_parscit_section)
-for prediction in prediction_list:
-  print prediction
+print prediction_list
