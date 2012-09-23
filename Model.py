@@ -15,8 +15,8 @@ if __name__ == "__main__":
   y = pickle.load(open(os.path.join(path_pickles, 'Targets.pickle'),'r'))
 
   # Choose Classifier Model
-  clf = svm.SVC(kernel='linear',probability=True)
-  #clf = LogisticRegression()
+  #clf = svm.SVC(kernel='linear',probability=True)
+  clf = LogisticRegression()
 
   clf.fit(X, y)
 

@@ -287,10 +287,18 @@ class extractor:
     feature_locationCitSent = self.dist.citSentLocationCFS(citStr, query, dom_citing_parscit_section)
     x.extend(feature_locationCitSent)
 
+    X = []
     # Cosine Similarity
     feature_cosineSimilarity = self.cosineSimilarityCFS_v2(query_tokens, query_col, dom_cited_parscit_section)
-    x.append(feature_cosineSimilarity)
-    return x
+    for result in feature_cosineSimilarity:
+      temp = x[:]
+      r = result[1]
+      cosine = r[0]
+      chunk_avg_weight = r[1]
+      temp.append(cosine)
+      temp.append(chunk_avg_weight)
+      X.append(temp)
+    return X
 
   def extractFeaturesCFS_v1(self, context, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited):
     # Context is ONE context

@@ -41,19 +41,23 @@ class citprov:
         authors_cited.append(a.firstChild.wholeText)
 
       # Get contexts
-      dom_contexts_cited = citation.getElementsByTagName('context')
+      dom_contexts_citing = citation.getElementsByTagName('context')
       context_list = []
-      for c in dom_contexts_cited:
+      for c in dom_contexts_citing:
         value = c.firstChild.wholeText.lower()
         context_list.append(self.nltk_Tools.nltkText(self.nltk_Tools.nltkWordTokenize(value)))
       citing_col = self.nltk_Tools.nltkTextCollection(context_list)
 
-      feature_vectors = []
-      for c in dom_contexts_cited:
+      # For each context, need to predict which bodyText is the prov
+      # With the prediction, return the section, and the bodytext itself
+      for c in dom_contexts_citing:
         cite_context = c.firstChild.wholeText
-        feature_vector = self.extractor.extractFeaturesCFS_v2(c, citing_col, dom_citing_parscit_section, dom_cited_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
-        feature_vectors.append(feature_vector)
-    return feature_vectors
+        feature_vectors = self.extractor.extractFeaturesCFS_v2(c, citing_col, dom_citing_parscit_section, dom_cited_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
+        print feature_vectors
+        sys.exit()
+        for fv in feature_vectors:
+          prediction = model.predict(fv)
+    return entries
 
   def predict(self, model, dom_citing_parscit, dom_citing_parscit_section):
     # Uses only DOMs from the current (citing) paper
