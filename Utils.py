@@ -477,8 +477,10 @@ class dataset_tools:
     targets = []
     indexAnnotations = 0
     indexInstances = 0
-
+    numleft = len(experiment)
     for e in experiment:
+      numleft -= 1
+      print numleft
       contexts = raw[e['citing']+"==>"+e['cited']]['contexts']
       context_list = []
       for c in contexts:
