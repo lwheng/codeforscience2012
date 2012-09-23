@@ -97,7 +97,7 @@ class citprov:
           header = section_finder(b)
           entry = {'cite-context':cite_context, 'prov-type':'specific', 'prov-section':header, 'prov-snippet':b.firstChild.wholeText}
         entries.append(entry)
-    return entries
+    return json.dumps(entries)
 
   def predict(self, model, dom_citing_parscit, dom_citing_parscit_section):
     # Uses only DOMs from the current (citing) paper
