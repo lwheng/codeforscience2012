@@ -21,4 +21,4 @@ if __name__ == "__main__":
   clf.fit(X, y)
 
   # Dump pickle
-  pickle.dump(clf)
+  pickle.dump(clf, open('ModelCFS_v2.pickle','wb'))
