@@ -13,7 +13,7 @@ class citprov:
     self.dataset_tools = Utils.dataset_tools(self.dist, self.nltk_Tools, self.pickler, self.tools)
     self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight, "authors", "titles")
     # Load model for prediction
-    self.model = self.pickler.loadPickle('ModelCFS.pickle')
+    #self.model = self.pickler.loadPickle('ModelCFS.pickle')
     self.model_v2 = self.pickler.loadPickle('ModelCFS_v2.pickle')
 
   def interpret_predictions_v2(self, model, feature_vectors):
