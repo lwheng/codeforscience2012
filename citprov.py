@@ -13,7 +13,7 @@ class citprov:
     self.dataset_tools = Utils.dataset_tools(self.dist, self.nltk_Tools, self.pickler, self.tools)
     self.extractor = Feature_Extractor.extractor(self.dist, self.nltk_Tools, self.pickler, self.tools, self.weight, "authors", "titles")
     # Load model for prediction
-    #self.model = self.pickler.loadPickle('ModelCFS.pickle')
+    self.model = self.pickler.loadPickle('ModelCFS.pickle')
     self.model_v2 = self.pickler.loadPickle('ModelCFS_v2.pickle')
 
   def interpret_predictions_v2(self, model, feature_vectors):
@@ -87,16 +87,23 @@ class citprov:
     # With the prediction, return the section, and the bodytext itself
     # General - 0, Specific (Yes) - 1, Specific (No) - 2, Undetermined - 3
     for c in dom_contexts_citing:
+      cit_str = c.getAttribute('citStr')
       cite_context = c.firstChild.wholeText
       feature_vectors = self.extractor.extractFeaturesCFS_v2(c, citing_col, dom_citing_parscit_section, dom_cited_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
       prediction = self.interpret_predictions_v2(model_v2, feature_vectors)
+      # Instead of returning the entire context, return only the citing sentence
+      context_lines = self.dist.sentenceTokenizer.tokenize(cite_context)
+      cite_sent = self.tools.searchTermInLines(cit_str, context_lines)
+      cite_sent = context_lines[cite_sent]
       if prediction[1] != 1:
-        entry = {'cite-context':cite_context, 'prov-type':'general', 'prov-section':'none', 'prov-snippet':'none'}
+        #entry = {'cite-context':cite_context, 'prov-type':'general', 'prov-section':'none', 'prov-snippet':'none'}
+        entry = {'cite-context':cite_sent, 'prov-type':'general', 'prov-section':'none', 'prov-snippet':'none'}
       else:
         # Find the section the body_text belong to
         b = body_texts[prediction[0]]
         header = section_finder(b)
-        entry = {'cite-context':cite_context, 'prov-type':'specific', 'prov-section':header, 'prov-snippet':b.firstChild.wholeText}
+        #entry = {'cite-context':cite_context, 'prov-type':'specific', 'prov-section':header, 'prov-snippet':b.firstChild.wholeText}
+        entry = {'cite-context':cite_sent, 'prov-type':'specific', 'prov-section':header, 'prov-snippet':b.firstChild.wholeText}
       entries.append(entry)
     return json.dumps(entries)
 
@@ -137,6 +144,7 @@ class citprov:
       citing_col = self.nltk_Tools.nltkTextCollection(context_list)
 
       for c in dom_contexts_cited:
+        cit_str = c.getAttribute('citStr')
         cite_context = c.firstChild.wholeText
         feature_vector = self.extractor.extractFeaturesCFS_v1(c, citing_col, dom_citing_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
         prediction = model.predict(feature_vector)
@@ -144,6 +152,11 @@ class citprov:
           prediction = "specific"
         else:
           prediction = "general"
-        entry = {'cite-context':cite_context, 'prov-type':prediction}
+        # Instead of returning the entire context, return only the citing sentence
+        context_lines = self.dist.sentenceTokenizer.tokenize(cite_context)
+        cite_sent = self.tools.searchTermInLines(cit_str, context_lines)
+        cite_sent = context_lines[cite_sent]
+        #entry = {'cite-context':cite_context, 'prov-type':prediction}
+        entry = {'cite-context':cite_sent, 'prov-type':prediction}
         entries.append(entry)
     return json.dumps(entries)
