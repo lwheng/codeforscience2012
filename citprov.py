@@ -57,46 +57,47 @@ class citprov:
     for dom_author in dom_authors_citing[0].getElementsByTagName('fullname'):
       authors_citing.append(dom_author.firstChild.wholeText)
 
-    # Get all citations
-    citations = dom_citing_parscit.getElementsByTagName('citation')
-    for citation in citations:
-      # Get title
-      dom_title_cited = citation.getElementsByTagName('title')
-      if dom_title_cited:
-        title_cited = dom_title_cited[0].firstChild.wholeText
+    # Which <citation> is the one referring to the cited paper?
+    title_cited = dom_cited_parscit_section.getElementsByTagName('title')[0].firstChild.wholeText
+    citation = self.dataset_tools.prepContextsCFS(self.dist, self.tools, title_citing, title_cited, dom_citing_parscit)
 
-      # Get authors
-      dom_authors_cited = citation.getElementsByTagName('author')
-      authors_cited = []
-      for a in dom_authors_cited:
-        authors_cited.append(a.firstChild.wholeText)
+    # Get title
+    dom_title_cited = citation.getElementsByTagName('title')
+    if dom_title_cited:
+      title_cited = dom_title_cited[0].firstChild.wholeText
 
-      # Get contexts
-      dom_contexts_citing = citation.getElementsByTagName('context')
-      context_list = []
-      for c in dom_contexts_citing:
-        value = c.firstChild.wholeText.lower()
-        context_list.append(self.nltk_Tools.nltkText(self.nltk_Tools.nltkWordTokenize(value)))
-      citing_col = self.nltk_Tools.nltkTextCollection(context_list)
+    # Get authors
+    dom_authors_cited = citation.getElementsByTagName('author')
+    authors_cited = []
+    for a in dom_authors_cited:
+      authors_cited.append(a.firstChild.wholeText)
 
-      # Get body_texts from dom_parscit_section_cited for output
-      body_texts = dom_cited_parscit_section.getElementsByTagName('bodyTexts')
+    # Get contexts
+    dom_contexts_citing = citation.getElementsByTagName('context')
+    context_list = []
+    for c in dom_contexts_citing:
+      value = c.firstChild.wholeText.lower()
+      context_list.append(self.nltk_Tools.nltkText(self.nltk_Tools.nltkWordTokenize(value)))
+    citing_col = self.nltk_Tools.nltkTextCollection(context_list)
 
-      # For each context, need to predict which bodyText is the prov
-      # With the prediction, return the section, and the bodytext itself
-      # General - 0, Specific (Yes) - 1, Specific (No) - 2, Undetermined - 3
-      for c in dom_contexts_citing:
-        cite_context = c.firstChild.wholeText
-        feature_vectors = self.extractor.extractFeaturesCFS_v2(c, citing_col, dom_citing_parscit_section, dom_cited_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
-        prediction = self.interpret_predictions_v2(model_v2, feature_vectors)
-        if prediction[1] != 1:
-          entry = {'cite-context':cite_context, 'prov-type':'general', 'prov-section':'none', 'prov-snippet':'none'}
-        else:
-          # Find the section the body_text belong to
-          b = body_texts[prediction[0]]
-          header = section_finder(b)
-          entry = {'cite-context':cite_context, 'prov-type':'specific', 'prov-section':header, 'prov-snippet':b.firstChild.wholeText}
-        entries.append(entry)
+    # Get body_texts from dom_parscit_section_cited for output
+    body_texts = dom_cited_parscit_section.getElementsByTagName('bodyTexts')
+
+    # For each context, need to predict which bodyText is the prov
+    # With the prediction, return the section, and the bodytext itself
+    # General - 0, Specific (Yes) - 1, Specific (No) - 2, Undetermined - 3
+    for c in dom_contexts_citing:
+      cite_context = c.firstChild.wholeText
+      feature_vectors = self.extractor.extractFeaturesCFS_v2(c, citing_col, dom_citing_parscit_section, dom_cited_parscit_section, title_citing, title_cited, authors_citing, authors_cited)
+      prediction = self.interpret_predictions_v2(model_v2, feature_vectors)
+      if prediction[1] != 1:
+        entry = {'cite-context':cite_context, 'prov-type':'general', 'prov-section':'none', 'prov-snippet':'none'}
+      else:
+        # Find the section the body_text belong to
+        b = body_texts[prediction[0]]
+        header = section_finder(b)
+        entry = {'cite-context':cite_context, 'prov-type':'specific', 'prov-section':header, 'prov-snippet':b.firstChild.wholeText}
+      entries.append(entry)
     return json.dumps(entries)
 
   def predict(self, model, dom_citing_parscit, dom_citing_parscit_section):
